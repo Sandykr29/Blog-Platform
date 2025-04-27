@@ -1,30 +1,63 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const { UserModel } = require("../models/userModel");
+const generateToken = require("../utils/generateToken");
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-};
+const registerUser = async (req, res) => {
+  const { firstName, lastName, email, location, password } = req.body;
 
-exports.register = async (req, res) => {
-  const { username, password } = req.body;
   try {
-    const user = await User.create({ username, password });
-    res.json({ token: generateToken(user._id) });
-  } catch (err) {
-    res.status(400).json({ message: 'User already exists' });
-  }
-};
+    const userExists = await UserModel.findOne({ email });
 
-exports.login = async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const user = await User.findOne({ username });
-    if (user && (await user.matchPassword(password))) {
-      res.json({ token: generateToken(user._id) });
-    } else {
-      res.status(401).json({ message: 'Invalid credentials' });
+    if (userExists) {
+      return res.status(400).json({ msg: "Email is already registered" });
     }
-  } catch (err) {
-    res.status(400).json({ message: 'Error' });
+
+    const hashedPassword = await bcrypt.hash(password, 8);
+
+    const user = await UserModel.create({
+      firstName,
+      lastName,
+      email,
+      location,
+      password: hashedPassword,
+    });
+
+    res.status(201).json({ msg: "Registration Successful" });
+  } catch (error) {
+    res.status(500).json({ msg: "Something went wrong. Try again later." });
   }
 };
+
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ msg: "Email not found. Please register." });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ msg: "Incorrect password" });
+    }
+
+    const token = generateToken(user._id);
+
+    res.status(200).json({ msg: "Login Successful", token });
+  } catch (error) {
+    res.status(500).json({ msg: "Login failed. Try again later." });
+  }
+};
+
+const getLoggedInUser = async (req, res) => {
+  try {
+    res.status(200).json(req.userData);
+  } catch (error) {
+    res.status(500).json({ msg: "Failed to fetch user data" });
+  }
+};
+
+module.exports = { registerUser, loginUser, getLoggedInUser };

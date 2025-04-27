@@ -1,6 +1,9 @@
-# Node.js
+# Node modules
 /node_modules
+
+# Build output
 /dist
 /build
-*.log
+
+# Environment variables
 .env
