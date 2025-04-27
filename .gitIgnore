@@ -1,0 +1,12 @@
+/my-repo
+  /.gitignore       <-- global gitignore
+  /client
+    /.gitignore     <-- client-specific gitignore (already there)
+    /src
+    /node_modules
+    /dist
+  /server
+    /.gitignore     <-- server-specific gitignore
+    /src
+    /node_modules
+    /build
