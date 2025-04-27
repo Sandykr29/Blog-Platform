@@ -46,7 +46,12 @@ const loginUser = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.status(200).json({ msg: "Login Successful", token });
+    res.status(200).json({ 
+      msg: "Login Successful", 
+      token, 
+      user: user.firstName // Include firstName explicitly
+    });
+    console.log(token, user.firstName);
   } catch (error) {
     res.status(500).json({ msg: "Login failed. Try again later." });
   }

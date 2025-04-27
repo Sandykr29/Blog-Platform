@@ -1,15 +1,15 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-const ProtectedRoute = () => {
-  const user = JSON.parse(localStorage.getItem('profile'));  // Get user data (token)
+const ProtectedRoute = ({ children }) => {
+  const { token } = useContext(AuthContext);
 
-  if (!user) {
-    // If no user is found, redirect to login page
-    return <Navigate to="/login" />;
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
 
-  // If user exists, render the child route
-  return <Outlet />;
+  return children;
 };
 
 export default ProtectedRoute;

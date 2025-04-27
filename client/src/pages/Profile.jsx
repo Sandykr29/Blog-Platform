@@ -1,44 +1,38 @@
-import { useEffect, useState } from "react";
-import { getPosts, deletePost } from "../services/api";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
+import PostCard from "../components/PostCard";
 
 const Profile = () => {
-  const [posts, setPosts] = useState([]);
-  const user = JSON.parse(localStorage.getItem('profile'));
+  const { user, token } = useContext(AuthContext);
+  const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    const { data } = await getPosts();
-    const userPosts = data.filter(post => post.creator === user?.id);
-    setPosts(userPosts);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this post?")) {
-      await deletePost(id);
-      fetchPosts();
-    }
-  };
+    axios.get(`/post/getUserPosts/${user._id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      setUserPosts(response.data);
+    })
+    .catch(err => {
+      console.error("Error fetching user posts", err);
+    });
+  }, [user._id, token]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">My Posts</h1>
-      {posts.length === 0 ? <p>No posts yet.</p> : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {posts.map(post => (
-            <div key={post._id} className="bg-white p-4 rounded shadow">
-              <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-              <div className="flex gap-4">
-                <Link to={`/posts/${post._id}`} className="text-blue-600">View</Link>
-                <button onClick={() => handleDelete(post._id)} className="text-red-600">Delete</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="p-8 bg-gradient-to-r from-purple-400 to-indigo-500 min-h-screen text-white">
+      <h2 className="text-3xl font-bold mb-6">Your Profile</h2>
+      <div className="bg-white p-6 rounded-md shadow-md">
+        <h3 className="text-2xl font-semibold">{user.name}</h3>
+        <p>{user.email}</p>
+      </div>
+
+      <h3 className="mt-6 text-2xl font-semibold">Your Posts</h3>
+      <div className="space-y-6">
+        {userPosts.length ? userPosts.map((post) => (
+          <PostCard key={post._id} post={post} />
+        )) : <p>You have no posts yet.</p>}
+      </div>
     </div>
   );
 };

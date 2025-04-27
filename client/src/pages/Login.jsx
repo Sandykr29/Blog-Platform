@@ -1,34 +1,38 @@
-import { useState } from "react";
-import { login } from "../services/api";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const { login } = useContext(AuthContext);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+    const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const { data } = await login(formData);
-      localStorage.setItem('profile', JSON.stringify(data));
-      navigate('/');
-    } catch (err) {
-      alert('Invalid Credentials');
-    }
+    login(formData.email, formData.password);
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form className="bg-white p-8 rounded shadow-md w-80" onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        <input type="text" name="username" placeholder="Username" onChange={handleChange} required className="w-full mb-4 p-2 border rounded" />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required className="w-full mb-4 p-2 border rounded" />
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Login</button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 to-blue-500 text-white">
+      <h2 className="text-3xl font-bold mb-6">Welcome Back!</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white p-8 rounded-md text-black shadow-md w-80">
+        <input type="text" name="email" placeholder="Email" onChange={handleChange} required className="p-2 rounded border"/>
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} required className="p-2 rounded border"/>
+        <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Login</button>
       </form>
+      <p className="mt-4 text-sm">
+        New user?{" "}
+        <span
+          className="text-blue-300 cursor-pointer hover:underline"
+          onClick={() => navigate("/register")}
+        >
+          Register here
+        </span>
+      </p>
     </div>
   );
 };

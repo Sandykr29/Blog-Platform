@@ -1,34 +1,39 @@
-import { useState } from "react";
-import { register } from "../services/api";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const { register } = useContext(AuthContext);
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+    const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await register(formData);
-      alert('Registered Successfully! Now Login.');
-      navigate('/login');
-    } catch (err) {
-      alert('Registration Failed');
-    }
+    register(formData.name, formData.email, formData.password);
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form className="bg-white p-8 rounded shadow-md w-80" onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-        <input type="text" name="username" placeholder="Username" onChange={handleChange} required className="w-full mb-4 p-2 border rounded" />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required className="w-full mb-4 p-2 border rounded" />
-        <button type="submit" className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Register</button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-500 text-white">
+      <h2 className="text-3xl font-bold mb-6">Create Your Account</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white p-8 rounded-md text-black shadow-md w-80">
+        <input type="text" name="name" placeholder="Name" onChange={handleChange} required className="p-2 rounded border"/>
+        <input type="email" name="email" placeholder="Email" onChange={handleChange} required className="p-2 rounded border"/>
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} required className="p-2 rounded border"/>
+        <button type="submit" className="bg-purple-600 text-white p-2 rounded hover:bg-purple-700">Register</button>
       </form>
+      <p className="mt-4 text-sm">
+        Already have an account?{" "}
+        <span
+          className="text-blue-300 cursor-pointer hover:underline"
+          onClick={() => navigate("/login")}
+        >
+          Click here to login
+        </span>
+      </p>
     </div>
   );
 };
