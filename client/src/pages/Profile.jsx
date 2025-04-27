@@ -8,7 +8,7 @@ const Profile = () => {
   const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
-    axios.get(`/post/getUserPosts/${user._id}`, {
+    axios.get(`/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {

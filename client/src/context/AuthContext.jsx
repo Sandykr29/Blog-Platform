@@ -7,10 +7,10 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || {}); // Initialize user from localStorage
+  const [posts,setPosts]=useState([])
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("AuthProvider initialized. Token:", token, "User:", user); // Debugging
     if (token) {
       fetchUser();
     }
@@ -21,12 +21,11 @@ export const AuthProvider = ({ children }) => {
       const res = await axios.get("/posts", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Fetched user:", res.data.user); // Debugging
-      if (res.data.user) {
-        setUser(res.data.user);
-      } else {
-        console.error("User data is missing in API response."); // Debugging
-      }
+      // if (res.data.user) {
+      //   setUser(res.data.user);
+      // } else {
+      //   console.error("User data is missing in API response."); // Debugging
+      // }
     } catch (err) {
       console.error("Error fetching user:", err); // Debugging
     }
@@ -39,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       setUser(res.data.user);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user)); // Store user in localStorage
+
       navigate("/home");
     } catch (err) {
       alert(err.response.data.msg || "Login failed");
