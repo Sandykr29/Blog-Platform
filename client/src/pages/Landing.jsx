@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import LandingSection from "./LandingSection";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+const {user,token}=  useContext(AuthContext)
 
   const handleLogin = () => {
     navigate("/login");
@@ -30,14 +33,14 @@ const LandingPage = () => {
           backgroundImage: `url('https://images.unsplash.com/photo-1512757776214-26d36777b513?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D')`,
         }}
       >
-        <div className="bg-black bg-opacity-40 p-10 rounded-lg">
+       <div className="bg-black bg-opacity-40 p-10 rounded-lg">
           <h2 className="text-3xl font-semibold text-white mb-5 text-center">
             Everyone has a story. It's time you shared yours.
           </h2>
           <p className="text-lg text-white text-center mb-6">
             Share your thoughts, ideas, and experiences with the world.
           </p>
-          <div className="flex gap-5 justify-center">
+          {!token && <div className="flex gap-5 justify-center">
             <button
               onClick={handleLogin}
               className="bg-indigo-500 text-white p-3 rounded-lg shadow-lg hover:bg-indigo-600 transition"
@@ -50,7 +53,7 @@ const LandingPage = () => {
             >
               Sign Up
             </button>
-          </div>
+          </div>}
         </div>
       </div>
 
