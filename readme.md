@@ -1,4 +1,4 @@
-# 📝 Blog Platform
+# 📝 BLOGO
 
 A full-stack blog platform where users can register, log in, create posts, view posts, and interact with other users' posts.
 
