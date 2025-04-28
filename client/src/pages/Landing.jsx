@@ -40,7 +40,14 @@ const {user,token}=  useContext(AuthContext)
           <p className="text-lg text-white text-center mb-6">
             Share your thoughts, ideas, and experiences with the world.
           </p>
-          {!token && <div className="flex gap-5 justify-center">
+          {token ?( (
+  <div className="flex items-center gap-5 justify-center p-5 bg-opacity-75  rounded-lg shadow-lg">
+
+    <span className="text-2xl font-semibold text-white text-shadow-md bg-indigo-500 p-1 rounded-lg">
+      Welcome Back!
+    </span>
+  </div>
+)) :(<div className="flex gap-5 justify-center">
             <button
               onClick={handleLogin}
               className="bg-indigo-500 text-white p-3 rounded-lg shadow-lg hover:bg-indigo-600 transition"
@@ -53,7 +60,7 @@ const {user,token}=  useContext(AuthContext)
             >
               Sign Up
             </button>
-          </div>}
+          </div>)}
         </div>
       </div>
 
