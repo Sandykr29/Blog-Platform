@@ -18,7 +18,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-indigo-200 via-pink-200 to-yellow-200 text-gray-800 p-8">
-      <h1 className="text-4xl font-bold mb-4 text-center">Welcome to Open-UP</h1>
+      <h1 className="text-4xl font-bold mb-4 text-center">Welcome to BLOGO</h1>
       <p className="text-xl mb-8 text-center">
         A platform to connect, share, and create amazing blogs. Join us now to start your journey!
       </p>
