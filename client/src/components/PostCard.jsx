@@ -24,16 +24,16 @@ const PostCard = ({ post }) => {
 
   return (
     <div className="bg-black p-6 rounded-md shadow-md">
-      <h3 className="text-xl font-semibold">{post.title || "Untitled Post"}</h3> {/* Fallback for missing title */}
-      <p>{post.content || "No content available"}</p> {/* Fallback for missing content */}
+      <h3 className="text-xl font-semibold text-white">{post.title || "Untitled Post"}</h3> {/* Explicit text color */}
+      <p className="text-gray-300">{post.content || "No content available"}</p> {/* Explicit text color */}
       <div className="mt-4">
-        <h4 className="font-bold">Tags:</h4>
-        <p>{post.tags?.join(", ") || "No tags available"}</p> {/* Render tags */}
-        <h4 className="font-bold mt-4">Comments:</h4>
+        <h4 className="font-bold text-gray-400">Tags:</h4> {/* Explicit text color */}
+        <p className="text-gray-300">{post.tags?.join(", ") || "No tags available"}</p> {/* Explicit text color */}
+        <h4 className="font-bold mt-4 text-gray-400">Comments:</h4> {/* Explicit text color */}
         <div className="space-y-2">
           {comments.map((comment, idx) => (
             <div key={idx} className="bg-gray-100 p-2 rounded-md">
-              <p>
+              <p className="text-gray-800">
                 <strong>{comment.fName} {comment.lName}</strong>: {comment.comment}
               </p>
             </div>
@@ -44,7 +44,7 @@ const PostCard = ({ post }) => {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Add a comment..."
-          className="p-2 rounded border mt-4 w-full"
+          className="p-2 rounded border mt-4 w-full text-gray-800" // Explicit text color
         />
         <button
           onClick={handleAddComment}
