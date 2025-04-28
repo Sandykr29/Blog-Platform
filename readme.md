@@ -1,15 +1,17 @@
-Got it bro —  
-You want a **full list of APIs**,  
-+ **what they do**,  
-+ **what dummy data to send** for testing in Postman.
+# 📝 Blog Platform
 
-I'll explain everything nicely ✍️
+A full-stack blog platform where users can register, log in, create posts, view posts, and interact with other users' posts.
 
 ---
 
-# 📜 Complete API Routes
+## 🌐 Deployment Links
+
+- **Frontend**: [https://subtle-babka-963171.netlify.app/](https://subtle-babka-963171.netlify.app/)
+- **Backend**: [https://blog-platform-osks.onrender.com/](https://blog-platform-osks.onrender.com/)
 
 ---
+
+## 📜 Complete API Routes
 
 ### 1. `POST /api/auth/register`
 👉 **Register a new user**
@@ -265,8 +267,8 @@ Authorization: Bearer JWT_TOKEN_HERE
 
 ---
 
-# ✅ Things to Remember
+## ✅ Things to Remember
 - Every `POST`, `PATCH`, `DELETE`, `GET /me` — needs **Authorization header**  
   →  
   `Authorization: Bearer JWT_TOKEN_HERE`
-  
+
