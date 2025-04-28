@@ -11,7 +11,7 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-blue-400 to-purple-600 text-white p-4 shadow-lg relative overflow-hidden">
       <div className="flex justify-between items-center mx-8">
         {/* Logo section */}
-        <Link to="/" className="text-2xl font-semibold flex items-center space-x-2">
+        <Link to="/" className="text-2xl font-semibold flex items-center space-x-2" >
           <img src={Logo} alt="BLOGO" className="w-12 h-12 object-contain" /> {/* Adjusted size to ensure full visibility */}
           <span className="text-3xl font-extrabold tracking-wide text-white">BLOGO</span>
         </Link>
@@ -62,8 +62,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Lighter background gradient */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-400 to-purple-500 opacity-30"></div>
+
     </nav>
   );
 };
